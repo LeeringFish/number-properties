@@ -43,12 +43,44 @@ public class NumberProperties {
     }
 
     public static void printProperties(long num) {
-        System.out.println("Properties of " + num);
-        System.out.println("\t\teven: " + isEven(num));
-        System.out.println("\t\todd: " + isOdd(num));
+        System.out.println("\nProperties of " + num);
         System.out.println("\t\tbuzz: " + isBuzz(num));
         System.out.println("\t\tduck: " + isDuck(num));
         System.out.println("\t\tpalindromic: " + isPalindrome(num));
+        System.out.println("\t\tgapful: " + isGapful(num));
+        System.out.println("\t\teven: " + isEven(num));
+        System.out.println("\t\todd: " + isOdd(num));
+    }
+
+    public static void printPropertiesList(long num, int count) {
+        for (int i = 0; i < count; i++) {
+            String description = "";
+            if (isBuzz(num)) {
+                description += "buzz, ";
+            }
+            if (isDuck(num)) {
+                description += "duck, ";
+            }
+            if (isPalindrome(num)) {
+                description += "palindrome, ";
+            }
+            if (isGapful(num)) {
+                description += "gapful, ";
+            }
+
+            if (isEven(num)) {
+                description += "even";
+            } else {
+                description += "odd";
+            }
+
+            System.out.printf("\n\t\t\t%d is %s", num, description);
+            num++;
+        }
+
+
+
+        System.out.println();
     }
 
 }
