@@ -21,7 +21,6 @@ public class NumberProperties {
             }
             num /= 10;
         }
-
         return false;
     }
 
@@ -33,8 +32,14 @@ public class NumberProperties {
                 return false;
             }
         }
-
         return true;
+    }
+
+    public static boolean isGapful(long num) {
+        String numToString = Long.toString(num);
+        int length = numToString.length();
+        String firstAndLast = String.format("%c%c", numToString.charAt(0), numToString.charAt(length - 1));
+        return length >= 3 && num % Integer.parseInt(firstAndLast) == 0;
     }
 
     public static void printProperties(long num) {
