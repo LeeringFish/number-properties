@@ -42,6 +42,22 @@ public class NumberProperties {
         return length >= 3 && num % Integer.parseInt(firstAndLast) == 0;
     }
 
+    public static boolean isSpy(long num) {
+        String numToString = Long.toString(num);
+        int sum = 0;
+        int product = 1;
+        int length = numToString.length();
+        int current;
+
+        for (int i = 0; i < length; i++) {
+            current = Integer.parseInt(String.valueOf(numToString.charAt(i)));
+            sum += current;
+            product *= current;
+        }
+
+        return sum == product;
+    }
+
     public static void printProperties(long num) {
         System.out.println("\nProperties of " + num);
         System.out.println("\t\tbuzz: " + isBuzz(num));
@@ -77,9 +93,6 @@ public class NumberProperties {
             System.out.printf("\n\t\t\t%d is %s", num, description);
             num++;
         }
-
-
-
         System.out.println();
     }
 
