@@ -64,36 +64,68 @@ public class NumberProperties {
         System.out.println("\t\tduck: " + isDuck(num));
         System.out.println("\t\tpalindromic: " + isPalindrome(num));
         System.out.println("\t\tgapful: " + isGapful(num));
+        System.out.println("\t\tspy: " + isSpy(num));
         System.out.println("\t\teven: " + isEven(num));
         System.out.println("\t\todd: " + isOdd(num));
     }
 
     public static void printPropertiesList(long num, int count) {
         for (int i = 0; i < count; i++) {
-            String description = "";
+            StringBuilder builder = new StringBuilder();
             if (isBuzz(num)) {
-                description += "buzz, ";
+                builder.append("buzz, ");
             }
             if (isDuck(num)) {
-                description += "duck, ";
+                builder.append("duck, ");
             }
             if (isPalindrome(num)) {
-                description += "palindrome, ";
+                builder.append("palindromic, ");
             }
             if (isGapful(num)) {
-                description += "gapful, ";
+                builder.append("gapful, ");
+            }
+
+            if (isSpy(num)) {
+                builder.append("spy, ");
             }
 
             if (isEven(num)) {
-                description += "even";
+                builder.append("even");
             } else {
-                description += "odd";
+                builder.append("odd");
             }
 
-            System.out.printf("\n\t\t\t%d is %s", num, description);
+            System.out.printf("\n\t\t\t%d is %s", num, builder);
             num++;
         }
-        System.out.println();
+
+    }
+
+    public static void printPropertiesBySearch(long num, int count, String search) {
+        final String PROPERTIES = "even odd buzz duck palindromic gapful spy";
+        search = search.toLowerCase();
+
+        if (PROPERTIES.contains(search)) {
+            while (count > 0) {
+                if (("buzz".equals(search) && isBuzz(num))
+                        || ("duck".equals(search) && isDuck(num))
+                        || ("palindromic".equals(search) && isPalindrome(num))
+                        || ("gapful".equals(search) && isGapful(num))
+                        || ("spy".equals(search) && isSpy(num))
+                        || ("even".equals(search) && isEven(num))
+                        || ("odd".equals(search) && isOdd(num))) {
+
+                    printPropertiesList(num, 1);
+                    count--;
+                }
+                num++;
+            }
+            System.out.println();
+
+        } else {
+            System.out.printf("The property [%s] is wrong.\n", search.toUpperCase());
+            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, EVEN, ODD]");
+        }
     }
 
 }

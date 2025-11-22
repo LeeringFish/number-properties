@@ -8,6 +8,7 @@ public class Main {
         long userInput = -1;
         String inputString;
         String[] inputParts;
+        int count;
 
         System.out.println("Welcome to Amazing Numbers!");
         printInstructions();
@@ -28,10 +29,11 @@ public class Main {
                 }
 
                 if (inputParts.length > 1) {
-                    if (secondParameterIsValid(inputParts[1])) {
-                        NumberProperties.printPropertiesList(userInput, Integer.parseInt(inputParts[1]));
+                    count = Integer.parseInt(inputParts[1]);
+                    if (inputParts.length > 2) {
+                        NumberProperties.printPropertiesBySearch(userInput, count, inputParts[2]);
                     } else {
-                        System.out.println("\nThe second parameter should be a natural number.");
+                        printList(userInput, count);
                     }
                 } else {
                     NumberProperties.printProperties(userInput);
@@ -51,6 +53,7 @@ public class Main {
         System.out.println("- enter two natural numbers to obtain the properties of the list:");
         System.out.println("  * the first parameter represents a starting number;");
         System.out.println("  * the second parameter shows how many consecutive numbers are to be processed;");
+        System.out.println("- two natural numbers and a property to search for;");
         System.out.println("- separate the parameters with one space;");
         System.out.println("- enter 0 to exit.");
     }
@@ -64,14 +67,26 @@ public class Main {
         return Long.parseLong(str) >= 0;
     }
 
-    public static boolean secondParameterIsValid(String str) {
-        for (char c: str.toCharArray()) {
-            if (!Character.isDigit(c)) {
-                return false;
-            }
+//    public static boolean secondParameterIsValid(String str) {
+//        for (char c: str.toCharArray()) {
+//            if (!Character.isDigit(c)) {
+//                return false;
+//            }
+//        }
+//        return Long.parseLong(str) >= 1;
+//    }
+
+    public static void printList(Long num, int count) {
+        if (count > 0) {
+            NumberProperties.printPropertiesList(num, count);
+            System.out.println();
+        } else {
+            System.out.println("\nThe second parameter should be a natural number.");
         }
-        return Long.parseLong(str) >= 1;
     }
+
+
+
 
 
 }
