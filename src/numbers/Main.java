@@ -67,15 +67,6 @@ public class Main {
         return Long.parseLong(str) >= 0;
     }
 
-//    public static boolean secondParameterIsValid(String str) {
-//        for (char c: str.toCharArray()) {
-//            if (!Character.isDigit(c)) {
-//                return false;
-//            }
-//        }
-//        return Long.parseLong(str) >= 1;
-//    }
-
     public static void printList(Long num, int count) {
         if (count > 0) {
             NumberProperties.printPropertiesList(num, count);

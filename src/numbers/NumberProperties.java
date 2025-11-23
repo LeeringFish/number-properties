@@ -58,6 +58,23 @@ public class NumberProperties {
         return sum == product;
     }
 
+    public static boolean isSquare(long num) {
+        if (num == 1) {
+            return true;
+        }
+
+        for (int i = 1; i <= num / 2; i++) {
+            if ((long) i * i == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSunny(long num) {
+        return isSquare(num + 1);
+    }
+
     public static void printProperties(long num) {
         System.out.println("\nProperties of " + num);
         System.out.println("\t\tbuzz: " + isBuzz(num));
@@ -65,6 +82,8 @@ public class NumberProperties {
         System.out.println("\t\tpalindromic: " + isPalindrome(num));
         System.out.println("\t\tgapful: " + isGapful(num));
         System.out.println("\t\tspy: " + isSpy(num));
+        System.out.println("\t\tsquare: " + isSquare(num));
+        System.out.println("\t\tsunny: " + isSunny(num));
         System.out.println("\t\teven: " + isEven(num));
         System.out.println("\t\todd: " + isOdd(num));
     }
@@ -87,6 +106,14 @@ public class NumberProperties {
 
             if (isSpy(num)) {
                 builder.append("spy, ");
+            }
+
+            if (isSquare(num)) {
+                builder.append("square, ");
+            }
+
+            if (isSunny(num)) {
+                builder.append("sunny, ");
             }
 
             if (isEven(num)) {
@@ -112,6 +139,8 @@ public class NumberProperties {
                         || ("palindromic".equals(search) && isPalindrome(num))
                         || ("gapful".equals(search) && isGapful(num))
                         || ("spy".equals(search) && isSpy(num))
+                        || ("square".equals(search) && isSquare(num))
+                        || ("sunny".equals(search) && isSunny(num))
                         || ("even".equals(search) && isEven(num))
                         || ("odd".equals(search) && isOdd(num))) {
 
