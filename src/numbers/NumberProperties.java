@@ -75,6 +75,22 @@ public class NumberProperties {
         return isSquare(num + 1);
     }
 
+    public static boolean hasProperty(long num, String property) {
+        return switch (property.toUpperCase()) {
+            case "BUZZ" -> isBuzz(num);
+            case "DUCK" -> isDuck(num);
+            case "PALINDROMIC" -> isPalindrome(num);
+            case "GAPFUL" -> isGapful(num);
+            case "SPY" -> isSpy(num);
+            case "SQUARE" -> isSquare(num);
+            case "SUNNY" -> isSunny(num);
+            case "EVEN" -> isEven(num);
+            case "ODD" -> isOdd(num);
+            default -> false;
+        };
+    }
+
+
     public static void printProperties(long num) {
         System.out.println("\nProperties of " + num);
         System.out.println("\t\tbuzz: " + isBuzz(num));
@@ -129,21 +145,12 @@ public class NumberProperties {
     }
 
     public static void printPropertiesBySearch(long num, int count, String search) {
-        final String PROPERTIES = "even odd buzz duck palindromic gapful spy";
+        final String PROPERTIES = "buzz duck palindromic gapful spy square sunny even odd";
         search = search.toLowerCase();
 
         if (PROPERTIES.contains(search)) {
             while (count > 0) {
-                if (("buzz".equals(search) && isBuzz(num))
-                        || ("duck".equals(search) && isDuck(num))
-                        || ("palindromic".equals(search) && isPalindrome(num))
-                        || ("gapful".equals(search) && isGapful(num))
-                        || ("spy".equals(search) && isSpy(num))
-                        || ("square".equals(search) && isSquare(num))
-                        || ("sunny".equals(search) && isSunny(num))
-                        || ("even".equals(search) && isEven(num))
-                        || ("odd".equals(search) && isOdd(num))) {
-
+                if (hasProperty(num, search)) {
                     printPropertiesList(num, 1);
                     count--;
                 }
@@ -153,7 +160,7 @@ public class NumberProperties {
 
         } else {
             System.out.printf("The property [%s] is wrong.\n", search.toUpperCase());
-            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, EVEN, ODD]");
+            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, EVEN, ODD]");
         }
     }
 
