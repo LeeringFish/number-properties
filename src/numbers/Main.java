@@ -30,7 +30,9 @@ public class Main {
 
                 if (inputParts.length > 1) {
                     count = Integer.parseInt(inputParts[1]);
-                    if (inputParts.length > 2) {
+                    if (inputParts.length > 3) {
+                        NumberProperties.printPropertiesByTwoSearches(userInput, count, inputParts[2], inputParts[3]);
+                    } else if (inputParts.length > 2) {
                         NumberProperties.printPropertiesBySearch(userInput, count, inputParts[2]);
                     } else {
                         printList(userInput, count);
@@ -54,6 +56,7 @@ public class Main {
         System.out.println("  * the first parameter represents a starting number;");
         System.out.println("  * the second parameter shows how many consecutive numbers are to be processed;");
         System.out.println("- two natural numbers and a property to search for;");
+        System.out.println("- two natural numbers and two properties to search for;");
         System.out.println("- separate the parameters with one space;");
         System.out.println("- enter 0 to exit.");
     }
