@@ -5,19 +5,19 @@ import java.lang.Math;
 public class NumberProperties {
     static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, even, odd";
 
-    public static boolean isOdd(Long num) {
+    public static boolean isOdd(long num) {
         return num % 2 != 0;
     }
 
-    public static boolean isEven(Long num) {
+    public static boolean isEven(long num) {
         return num % 2 == 0;
     }
 
-    public static boolean isBuzz(Long num) {
+    public static boolean isBuzz(long num) {
         return num % 10 == 7 || num % 7 == 0;
     }
 
-    public static boolean isDuck(Long num) {
+    public static boolean isDuck(long num) {
         while (num >= 10) {
             if (num % 10 == 0) {
                 return true;
@@ -27,7 +27,7 @@ public class NumberProperties {
         return false;
     }
 
-    public static boolean isPalindrome(Long num) {
+    public static boolean isPalindrome(long num) {
         String numToString = Long.toString(num);
         int length = numToString.length();
         for (int i = 0, j = length - 1; i < numToString.length() / 2; i++, j--) {
@@ -38,14 +38,14 @@ public class NumberProperties {
         return true;
     }
 
-    public static boolean isGapful(Long num) {
+    public static boolean isGapful(long num) {
         String numToString = Long.toString(num);
         int length = numToString.length();
         String firstAndLast = String.format("%c%c", numToString.charAt(0), numToString.charAt(length - 1));
         return length >= 3 && num % Integer.parseInt(firstAndLast) == 0;
     }
 
-    public static boolean isSpy(Long num) {
+    public static boolean isSpy(long num) {
         String numToString = Long.toString(num);
         int sum = 0;
         int product = 1;
@@ -61,16 +61,31 @@ public class NumberProperties {
         return sum == product;
     }
 
-    public static boolean isSquare(Long num) {
+    public static boolean isSquare(long num) {
         long r = (long) Math.sqrt(num);
         return r * r == num;
     }
 
-    public static boolean isSunny(Long num) {
+    public static boolean isSunny(long num) {
         return isSquare(num + 1);
     }
 
-    public static boolean hasProperty(Long num, String property) {
+    public static boolean isJumping(long num) {
+        String numToString = Long.toString(num);
+        int current, previous;
+
+        for (int i = 1; i < numToString.length(); i++) {
+            current = Integer.parseInt(String.valueOf(numToString.charAt(i)));
+            previous = Integer.parseInt(String.valueOf(numToString.charAt(i - 1)));
+            if (Math.abs(current - previous) != 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean hasProperty(long num, String property) {
         return switch (property.toUpperCase()) {
             case "BUZZ" -> isBuzz(num);
             case "DUCK" -> isDuck(num);
@@ -91,7 +106,7 @@ public class NumberProperties {
                 ("spy duck".contains(propOne) && "spy duck".contains(propTwo));
     }
 
-    public static void printProperties(Long num) {
+    public static void printProperties(long num) {
         System.out.println("\nProperties of " + num);
         System.out.println("\t\tbuzz: " + isBuzz(num));
         System.out.println("\t\tduck: " + isDuck(num));
@@ -104,7 +119,7 @@ public class NumberProperties {
         System.out.println("\t\todd: " + isOdd(num));
     }
 
-    public static void printPropertiesList(Long num, int count) {
+    public static void printPropertiesList(long num, int count) {
         for (int i = 0; i < count; i++) {
             StringBuilder builder = new StringBuilder();
             for (String property: PROPERTIES.split(", ")) {
@@ -122,7 +137,7 @@ public class NumberProperties {
 
     }
 
-    public static void printPropertiesBySearch(Long num, int count, String search) {
+    public static void printPropertiesBySearch(long num, int count, String search) {
         search = search.toLowerCase();
 
         if (PROPERTIES.contains(search)) {
@@ -141,7 +156,7 @@ public class NumberProperties {
         }
     }
 
-    public static void printPropertiesByTwoSearches(Long num, int count, String searchOne, String searchTwo) {
+    public static void printPropertiesByTwoSearches(long num, int count, String searchOne, String searchTwo) {
         searchOne = searchOne.toLowerCase();
         searchTwo = searchTwo.toLowerCase();
 
