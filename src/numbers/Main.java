@@ -14,7 +14,7 @@ public class Main {
         System.out.println("Welcome to Amazing Numbers!");
         printInstructions();
 
-        while (userInput != 0) {
+        while (true) {
             System.out.print("\nEnter a request: > ");
             inputString = keyboard.nextLine();
             if ("".equals(inputString)) {

@@ -86,6 +86,19 @@ public class NumberProperties {
         return true;
     }
 
+    public static long sumDigitSquares(long num) {
+        long sum = 0;
+        long digit;
+
+        while (num >= 10) {
+            digit = num % 10;
+            sum += digit * digit;
+            num /= 10;
+        }
+        sum += num * num;
+        return sum;
+    }
+
     public static boolean hasProperty(long num, String property) {
         return switch (property.toUpperCase()) {
             case "BUZZ" -> isBuzz(num);
