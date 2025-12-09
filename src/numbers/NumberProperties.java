@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NumberProperties {
-    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, jumping, even, odd";
+    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, jumping, sad, happy, even, odd";
 
     public static boolean isOdd(long num) {
         return num % 2 != 0;
@@ -86,6 +86,22 @@ public class NumberProperties {
         return true;
     }
 
+    public static boolean isHappy(long num) {
+        long new_num = sumDigitSquares(num);
+
+        while (new_num != num) {
+            if (sumDigitSquares(new_num) == 1) {
+                return true;
+            }
+            new_num = sumDigitSquares(new_num);
+        }
+        return num == 1;
+    }
+
+    public static boolean isSad(long num) {
+        return !isHappy(num);
+    }
+
     public static long sumDigitSquares(long num) {
         long sum = 0;
         long digit;
@@ -109,6 +125,8 @@ public class NumberProperties {
             case "SQUARE" -> isSquare(num);
             case "SUNNY" -> isSunny(num);
             case "JUMPING" -> isJumping(num);
+            case "SAD" -> isSad(num);
+            case "HAPPY" -> isHappy(num);
             case "EVEN" -> isEven(num);
             case "ODD" -> isOdd(num);
             default -> false;
@@ -134,6 +152,8 @@ public class NumberProperties {
         System.out.println("\t\tsquare: " + isSquare(num));
         System.out.println("\t\tsunny: " + isSunny(num));
         System.out.println("\t\tjumping: " + isJumping(num));
+        System.out.println("\t\tsad: " + isSad(num));
+        System.out.println("\t\thappy: " + isHappy(num));
         System.out.println("\t\teven: " + isEven(num));
         System.out.println("\t\todd: " + isOdd(num));
     }
@@ -180,7 +200,8 @@ public class NumberProperties {
             } else {
                 System.out.printf("The property %s is wrong.\n", invalidProperties);
             }
-            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, JUMPING, EVEN, ODD]");
+            System.out.println("Available properties: " +
+                    "[BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, JUMPING, SAD, HAPPY, EVEN, ODD]");
         }
     }
 
@@ -202,6 +223,8 @@ public class NumberProperties {
             case "SUNNY" -> "SQUARE";
             case "SPY" -> "DUCK";
             case "DUCK" -> "SPY";
+            case "SAD" -> "HAPPY";
+            case "HAPPY" -> "SAD";
             default -> "";
         };
     }
