@@ -1,9 +1,11 @@
 package numbers;
 
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NumberProperties {
-    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, even, odd";
+    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, jumping, even, odd";
 
     public static boolean isOdd(long num) {
         return num % 2 != 0;
@@ -71,15 +73,14 @@ public class NumberProperties {
     }
 
     public static boolean isJumping(long num) {
-        String numToString = Long.toString(num);
-        int current, previous;
 
-        for (int i = 1; i < numToString.length(); i++) {
-            current = Integer.parseInt(String.valueOf(numToString.charAt(i)));
-            previous = Integer.parseInt(String.valueOf(numToString.charAt(i - 1)));
-            if (Math.abs(current - previous) != 1) {
+        while (num >= 10) {
+            long last = num % 10;
+            long prev = (num / 10) % 10;
+            if (Math.abs(last - prev) != 1) {
                 return false;
             }
+            num /= 10;
         }
 
         return true;
@@ -94,16 +95,20 @@ public class NumberProperties {
             case "SPY" -> isSpy(num);
             case "SQUARE" -> isSquare(num);
             case "SUNNY" -> isSunny(num);
+            case "JUMPING" -> isJumping(num);
             case "EVEN" -> isEven(num);
             case "ODD" -> isOdd(num);
             default -> false;
         };
     }
 
-    public static boolean propertiesAreMutuallyExclusive(String propOne, String propTwo) {
-        return ("even odd".contains(propOne) && "even odd".contains(propTwo)) ||
-                ("square sunny".contains(propOne) && "square sunny".contains(propTwo)) ||
-                ("spy duck".contains(propOne) && "spy duck".contains(propTwo));
+    public static boolean hasAllProperties(long num, String[] properties) {
+        for (String property: properties) {
+            if (!hasProperty(num, property)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void printProperties(long num) {
@@ -115,6 +120,7 @@ public class NumberProperties {
         System.out.println("\t\tspy: " + isSpy(num));
         System.out.println("\t\tsquare: " + isSquare(num));
         System.out.println("\t\tsunny: " + isSunny(num));
+        System.out.println("\t\tjumping: " + isJumping(num));
         System.out.println("\t\teven: " + isEven(num));
         System.out.println("\t\todd: " + isOdd(num));
     }
@@ -137,55 +143,68 @@ public class NumberProperties {
 
     }
 
-    public static void printPropertiesBySearch(long num, int count, String search) {
-        search = search.toLowerCase();
-
-        if (PROPERTIES.contains(search)) {
-            while (count > 0) {
-                if (hasProperty(num, search)) {
-                    printPropertiesList(num, 1);
-                    count--;
-                }
-                num++;
-            }
-            System.out.println();
-
-        } else {
-            System.out.printf("The property [%s] is wrong.\n", search.toUpperCase());
-            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, EVEN, ODD]");
-        }
-    }
-
-    public static void printPropertiesByTwoSearches(long num, int count, String searchOne, String searchTwo) {
-        searchOne = searchOne.toLowerCase();
-        searchTwo = searchTwo.toLowerCase();
-
-        if (PROPERTIES.contains(searchOne) && PROPERTIES.contains(searchTwo)) {
-            if (propertiesAreMutuallyExclusive(searchOne, searchTwo)) {
-                System.out.printf("\nThe request contains mutually exclusive properties: [%s, %s]\n",
-                        searchOne.toUpperCase(), searchTwo.toUpperCase());
-                System.out.println("There are no numbers with these properties.");
-            } else {
+    public static void printPropertiesBySearch(long num, int count, String[] properties) {
+        ArrayList<String> invalidProperties = getInvalidProperties(properties);
+        if (invalidProperties.isEmpty()) {
+            ArrayList<String> exclProps = mutuallyExclusiveProperties(properties);
+            if (exclProps.isEmpty()) {
                 while (count > 0) {
-                    if (hasProperty(num, searchOne) && hasProperty(num, searchTwo)) {
+                    if (hasAllProperties(num, properties)) {
                         printPropertiesList(num, 1);
                         count--;
                     }
                     num++;
                 }
                 System.out.println();
+            } else {
+                System.out.printf("\nThe request contains mutually exclusive properties: %s\n", exclProps);
+                System.out.println("There are no numbers with these properties.");
             }
         } else {
             System.out.println();
-            if (!PROPERTIES.contains(searchOne)) {
-                System.out.printf("The property [%s] is wrong.\n", searchOne.toUpperCase());
+            if (invalidProperties.size() == 1) {
+                System.out.printf("The property [%s] is wrong.\n", invalidProperties.getFirst());
+            } else {
+                System.out.printf("The property %s is wrong.\n", invalidProperties);
             }
-
-            if (!PROPERTIES.contains(searchTwo)) {
-                System.out.printf("The property [%s] is wrong.\n", searchTwo.toUpperCase());
-            }
-            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, EVEN, ODD]");
+            System.out.println("Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, JUMPING, EVEN, ODD]");
         }
+    }
+
+    public static ArrayList<String> getInvalidProperties(String[] properties) {
+        ArrayList<String> invalidProperties = new ArrayList<>();
+        for (String property: properties) {
+            if (!PROPERTIES.contains(property.toLowerCase())) {
+                invalidProperties.add(property.toUpperCase());
+            }
+        }
+        return invalidProperties;
+    }
+
+    public static String getMutuallyExclusiveProperty(String property) {
+        return switch (property.toUpperCase()) {
+            case "EVEN" -> "ODD";
+            case "ODD" -> "EVEN";
+            case "SQUARE" -> "SUNNY";
+            case "SUNNY" -> "SQUARE";
+            case "SPY" -> "DUCK";
+            case "DUCK" -> "SPY";
+            default -> "";
+        };
+    }
+
+    public static ArrayList<String> mutuallyExclusiveProperties(String[] props) {
+        ArrayList<String> properties = new ArrayList<>(Arrays.asList(props));
+        ArrayList<String> propsToReturn = new ArrayList<>();
+
+        for (String property: properties) {
+            String otherProperty = getMutuallyExclusiveProperty(property);
+            if (properties.contains(otherProperty) || properties.contains(otherProperty.toLowerCase())) {
+                propsToReturn.add(property.toUpperCase());
+            }
+        }
+
+        return propsToReturn;
     }
 
 }

@@ -1,5 +1,6 @@
 package numbers;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -7,7 +8,7 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         long userInput = -1;
         String inputString;
-        String[] inputParts;
+        String[] inputParts, properties;
         int count;
 
         System.out.println("Welcome to Amazing Numbers!");
@@ -30,12 +31,16 @@ public class Main {
 
                 if (inputParts.length > 1) {
                     count = Integer.parseInt(inputParts[1]);
-                    if (inputParts.length > 3) {
-                        NumberProperties.printPropertiesByTwoSearches(userInput, count, inputParts[2], inputParts[3]);
-                    } else if (inputParts.length > 2) {
-                        NumberProperties.printPropertiesBySearch(userInput, count, inputParts[2]);
+                    if (count > 0) {
+                        if (inputParts.length > 2) {
+                            properties = Arrays.copyOfRange(inputParts, 2, inputParts.length);
+                            NumberProperties.printPropertiesBySearch(userInput, count, properties);
+                        } else {
+                            NumberProperties.printPropertiesList(userInput, count);
+                        }
+                        System.out.println();
                     } else {
-                        printList(userInput, count);
+                        System.out.println("\nThe second parameter should be a natural number.");
                     }
                 } else {
                     NumberProperties.printProperties(userInput);
@@ -55,8 +60,7 @@ public class Main {
         System.out.println("- enter two natural numbers to obtain the properties of the list:");
         System.out.println("  * the first parameter represents a starting number;");
         System.out.println("  * the second parameter shows how many consecutive numbers are to be processed;");
-        System.out.println("- two natural numbers and a property to search for;");
-        System.out.println("- two natural numbers and two properties to search for;");
+        System.out.println("- two natural numbers and properties to search for;");
         System.out.println("- separate the parameters with one space;");
         System.out.println("- enter 0 to exit.");
     }
@@ -70,14 +74,6 @@ public class Main {
         return Long.parseLong(str) >= 0;
     }
 
-    public static void printList(Long num, int count) {
-        if (count > 0) {
-            NumberProperties.printPropertiesList(num, count);
-            System.out.println();
-        } else {
-            System.out.println("\nThe second parameter should be a natural number.");
-        }
-    }
 
 
 
