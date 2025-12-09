@@ -87,13 +87,8 @@ public class NumberProperties {
     }
 
     public static boolean isHappy(long num) {
-        long new_num = sumDigitSquares(num);
-
-        while (new_num != num) {
-            if (sumDigitSquares(new_num) == 1) {
-                return true;
-            }
-            new_num = sumDigitSquares(new_num);
+        while (num != 1 && num != 4) {
+            num = sumDigitSquares(num);
         }
         return num == 1;
     }
@@ -106,12 +101,11 @@ public class NumberProperties {
         long sum = 0;
         long digit;
 
-        while (num >= 10) {
+        while (num > 0) {
             digit = num % 10;
             sum += digit * digit;
             num /= 10;
         }
-        sum += num * num;
         return sum;
     }
 
