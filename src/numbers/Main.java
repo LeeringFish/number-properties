@@ -61,6 +61,7 @@ public class Main {
         System.out.println("  * the first parameter represents a starting number;");
         System.out.println("  * the second parameter shows how many consecutive numbers are to be processed;");
         System.out.println("- two natural numbers and properties to search for;");
+        System.out.println("- a property preceded by minus must not be present in numbers");
         System.out.println("- separate the parameters with one space;");
         System.out.println("- enter 0 to exit.");
     }

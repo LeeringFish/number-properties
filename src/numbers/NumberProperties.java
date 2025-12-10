@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NumberProperties {
-    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, jumping, sad, happy, even, odd";
+    static final String PROPERTIES = "buzz, duck, palindromic, gapful, spy, square, sunny, " +
+                                     "jumping, sad, happy, even, odd";
 
     public static boolean isOdd(long num) {
         return num % 2 != 0;
@@ -110,7 +111,13 @@ public class NumberProperties {
     }
 
     public static boolean hasProperty(long num, String property) {
-        return switch (property.toUpperCase()) {
+        boolean negation = false;
+        if (property.charAt(0) == '-') {
+            negation = true;
+            property = property.substring(1);
+        }
+
+        boolean result = switch (property.toUpperCase()) {
             case "BUZZ" -> isBuzz(num);
             case "DUCK" -> isDuck(num);
             case "PALINDROMIC" -> isPalindrome(num);
@@ -125,6 +132,8 @@ public class NumberProperties {
             case "ODD" -> isOdd(num);
             default -> false;
         };
+
+        return result ^ negation;
     }
 
     public static boolean hasAllProperties(long num, String[] properties) {
@@ -202,25 +211,47 @@ public class NumberProperties {
     public static ArrayList<String> getInvalidProperties(String[] properties) {
         ArrayList<String> invalidProperties = new ArrayList<>();
         for (String property: properties) {
-            if (!PROPERTIES.contains(property.toLowerCase())) {
+
+            if ((property.length() < 3) ||
+                    (!PROPERTIES.contains(property.toLowerCase()) &&
+                    !PROPERTIES.contains(property.substring(1).toLowerCase()))) {
+
                 invalidProperties.add(property.toUpperCase());
             }
         }
         return invalidProperties;
     }
 
-    public static String getMutuallyExclusiveProperty(String property) {
-        return switch (property.toUpperCase()) {
-            case "EVEN" -> "ODD";
-            case "ODD" -> "EVEN";
-            case "SQUARE" -> "SUNNY";
-            case "SUNNY" -> "SQUARE";
-            case "SPY" -> "DUCK";
-            case "DUCK" -> "SPY";
-            case "SAD" -> "HAPPY";
-            case "HAPPY" -> "SAD";
-            default -> "";
+    public static ArrayList<String> getAllMutuallyExclusiveProperties(String property) {
+        ArrayList<String> props = new ArrayList<>();
+
+        switch (property.toUpperCase()) {
+            case "EVEN" -> props.add("ODD");
+            case "ODD" -> props.add("EVEN");
+            case "SQUARE" -> props.add("SUNNY");
+            case "SUNNY" -> props.add("SQUARE");
+            case "SPY" -> props.add("DUCK");
+            case "DUCK" -> props.add("SPY");
+            case "SAD" -> props.add("HAPPY");
+            case "HAPPY" -> props.add("SAD");
         };
+
+        switch (property.toUpperCase()) {
+            case "-EVEN" -> props.add("-ODD");
+            case "-ODD" -> props.add("-EVEN");
+            case "-SPY" -> props.add("-DUCK");
+            case "-DUCK" -> props.add("-SPY");
+            case "-SAD" -> props.add("-HAPPY");
+            case "-HAPPY" -> props.add("-SAD");
+        };
+
+        if (property.charAt(0) == '-') {
+            props.add(property.substring(1));
+        } else {
+            props.add("-" + property);
+        }
+
+        return props;
     }
 
     public static ArrayList<String> mutuallyExclusiveProperties(String[] props) {
@@ -228,10 +259,13 @@ public class NumberProperties {
         ArrayList<String> propsToReturn = new ArrayList<>();
 
         for (String property: properties) {
-            String otherProperty = getMutuallyExclusiveProperty(property);
-            if (properties.contains(otherProperty) || properties.contains(otherProperty.toLowerCase())) {
-                propsToReturn.add(property.toUpperCase());
+            ArrayList<String> allExclProps = getAllMutuallyExclusiveProperties(property);
+            for (String otherProperty: allExclProps) {
+                if (properties.contains(otherProperty) || properties.contains(otherProperty.toLowerCase())) {
+                    propsToReturn.add(property.toUpperCase());
+                }
             }
+
         }
 
         return propsToReturn;
